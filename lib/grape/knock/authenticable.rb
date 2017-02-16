@@ -22,7 +22,9 @@ module Grape
 
       def authenticate
         fail ::Grape::Knock::ForbiddenError unless token
+        Rails.logger.info request.inspect
         request = Grape::Request.new(env)
+        Rails.logger.info request.inspect
         @current_user = ::Knock::AuthToken.new(token: token, request: request).current_user
         fail ::Grape::Knock::ForbiddenError unless @current_user
       rescue ::JWT::DecodeError
